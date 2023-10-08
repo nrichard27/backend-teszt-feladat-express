@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import uuid from 'uuid';
 import { IUser, User } from './user.schema';
 
-export interface IAddress {
+export class IAddress {
     id: string;
     country: string;
     city: string;
