@@ -2,10 +2,10 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import routes from './router';
 import helmet from 'helmet';
-import * as db from './config/db.config';
+import { connect_to_database } from './config/db.config';
 
 // Connect to database
-db.connect();
+connect_to_database();
 
 const app = express();
 
