@@ -3,9 +3,13 @@ import cors from 'cors';
 import routes from './router';
 import helmet from 'helmet';
 import { connect_to_database } from './config/db.config';
+import { create_test_user } from './config/test-user.config';
 
 // Connect to database
 connect_to_database();
+
+// Add test user with admin role
+create_test_user();
 
 const app = express();
 
