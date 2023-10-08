@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import uuid from 'uuid';
-import { IUser } from './user.schema';
+import { IUser, User } from './user.schema';
 
 export interface IAddress {
     id: string;
@@ -39,5 +39,18 @@ export const AddressSchema = new Schema<IAddress>({
         ref: 'User',
     },
 });
+
+AddressSchema.pre(
+    'deleteOne',
+    { document: false, query: true },
+    async function () {
+        const doc = await this.model.findOne(this.getFilter());
+        const user = await User.findOne({ _id: doc.user }).populate(
+            'addresses',
+        );
+        user!.addresses = user!.addresses.filter((x) => x != doc);
+        user!.save();
+    },
+);
 
 export const Address = model<IAddress>('Address', AddressSchema);
