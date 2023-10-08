@@ -1,0 +1,32 @@
+{
+    "name": "backend-teszt-feladat-express",
+    "private": true,
+    "version": "1.0.0",
+    "description": "",
+    "author": "nrichard27 <thenagyrichard@gmail.com> (https://nrichard.hu)",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nrichard27/backend-teszt-feladat-express"
+    },
+    "main": "dist/src/index.js",
+    "scripts": {
+        "dev": "tsc && node -r dotenv/config .",
+        "prod": "node .",
+        "build": "tsc",
+        "watch": "nodemon -r dotenv/config src/index.ts"
+    },
+    "devDependencies": {
+        "@types/node": "^20.8.3",
+        "@typescript-eslint/eslint-plugin": "^6.7.4",
+        "@typescript-eslint/parser": "^6.7.4",
+        "dotenv": "^16.3.1",
+        "eslint": "^8.51.0",
+        "eslint-config-prettier": "^9.0.0",
+        "eslint-plugin-prettier": "^5.0.0",
+        "nodemon": "^3.0.1",
+        "prettier": "^3.0.3",
+        "ts-node": "^10.9.1",
+        "typescript": "^5.2.2"
+    }
+}
