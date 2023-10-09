@@ -19,9 +19,18 @@ export async function find_one_by_email(email: string) {
 }
 
 export async function create(dto: UserCreateDto) {
-    if (dto.password) {
-        dto.password = await bcrypt.hash(dto.password, 10);
-    }
+    dto.password = await bcrypt.hash(dto.password, 10);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const new_addresses: any[] = [];
+
+    dto.addresses?.forEach(async (a) => {
+        const addr = await Address.create(a);
+        new_addresses.push(addr);
+        await addr.save();
+    });
+
+    dto.addresses = new_addresses;
 
     const user = await User.create({ dto });
 
@@ -73,8 +82,11 @@ export async function update_by_id(id: string, dto: UserUpdateDto) {
             await Address.deleteOne({ id });
         });
 
+        dto.addresses = [];
+
         additions.forEach(async (a) => {
             const addr = await Address.create(a);
+            dto.addresses?.push(addr);
             await addr.save();
         });
     }
