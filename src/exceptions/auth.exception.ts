@@ -37,3 +37,9 @@ export class ForbiddenException extends AuthException {
         super(403, 'Forbidden', 813);
     }
 }
+
+export class NotFoundException extends AuthException {
+    constructor() {
+        super(404, 'Not found', 0);
+    }
+}
