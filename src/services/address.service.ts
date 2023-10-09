@@ -49,7 +49,7 @@ export async function get_all_by_user_id(id: string) {
         throw new WrongCredentialsException();
     }
 
-    return success({ address: user.addresses });
+    return success({ addresses: user.addresses });
 }
 
 export async function update_by_user_id(
