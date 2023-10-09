@@ -1,0 +1,9 @@
+# Ignore everything
+*
+
+# Add back necessary files
+!/src
+!/LICENSE
+!/package.json
+!/package-lock.json
+!/tsconfig.json
