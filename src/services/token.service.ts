@@ -2,7 +2,7 @@ import * as jwt from 'jsonwebtoken';
 import { ITokenPayload } from '../interfaces/token-payload.interface';
 import { ILoginTokens } from '../interfaces/login-tokens.interface';
 import { TokenType } from '../interfaces/token-type.enum';
-import { IRefreshToken, RefreshToken } from '../schemas/refresh-token.shema';
+import { IRefreshToken, RefreshToken } from '../schemas/refresh-token.schema';
 
 export function generate_access_token(payload: ITokenPayload): string {
     return jwt.sign(
