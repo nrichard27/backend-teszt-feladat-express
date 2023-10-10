@@ -66,6 +66,8 @@ const router = Router();
  *             examples:
  *               1:
  *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
  */
 router.post(
     '/',
@@ -114,6 +116,8 @@ router.post(
  *             examples:
  *               1:
  *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
  */
 router.get(
     '/',
@@ -167,6 +171,8 @@ router.get(
  *             examples:
  *               1:
  *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
  */
 router.get(
     '/:id',
@@ -235,6 +241,8 @@ router.get(
  *             examples:
  *               1:
  *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
  */
 router.patch(
     '/:id',
@@ -289,6 +297,8 @@ router.patch(
  *             examples:
  *               1:
  *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
  */
 router.delete(
     '/:id',
@@ -336,6 +346,8 @@ router.delete(
  *             examples:
  *               1:
  *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
  */
 router.get(
     '/@me',
@@ -397,6 +409,8 @@ router.get(
  *             examples:
  *               1:
  *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
  */
 router.patch(
     '/@me',
@@ -444,6 +458,8 @@ router.patch(
  *             examples:
  *               1:
  *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
  */
 router.delete(
     '/@me',

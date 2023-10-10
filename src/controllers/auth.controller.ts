@@ -121,7 +121,7 @@ router.post(
  *     tags:
  *       - Auth
  *     summary: Új access token kérése
- *     description: Készít egy új access tokent.
+ *     description: Készít egy új access tokent. Refresh token szükséges.
  *     operationId: authRefresh
  *     responses:
  *       '200':

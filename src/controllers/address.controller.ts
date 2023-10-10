@@ -68,6 +68,8 @@ const router = Router();
  *             examples:
  *               1:
  *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
  */
 router.post(
     '/:user_id',
@@ -122,6 +124,8 @@ router.post(
  *             examples:
  *               1:
  *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
  */
 router.get(
     '/:user_id',
@@ -180,6 +184,8 @@ router.get(
  *             examples:
  *               1:
  *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
  */
 router.get(
     '/:user_id/:address_id',
@@ -258,6 +264,8 @@ router.get(
  *             examples:
  *               1:
  *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
  */
 router.patch(
     '/:user_id/:address_id',
@@ -323,6 +331,8 @@ router.patch(
  *             examples:
  *               1:
  *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
  */
 router.delete(
     '/:user_id/:address_id',
@@ -390,6 +400,8 @@ router.delete(
  *             examples:
  *               1:
  *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
  */
 router.post(
     '/@me',
@@ -443,6 +455,8 @@ router.post(
  *             examples:
  *               1:
  *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
  */
 router.get(
     '/@me',
@@ -495,6 +509,8 @@ router.get(
  *             examples:
  *               1:
  *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
  */
 router.get(
     '/@me/:address_id',
@@ -567,6 +583,8 @@ router.get(
  *             examples:
  *               1:
  *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
  */
 router.patch(
     '/@me/:address_id',
@@ -626,6 +644,8 @@ router.patch(
  *             examples:
  *               1:
  *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
  */
 router.delete(
     '/@me/:address_id',
