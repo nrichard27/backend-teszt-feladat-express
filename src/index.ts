@@ -4,6 +4,8 @@ import routes from './router';
 import helmet from 'helmet';
 import { connect_to_database } from './config/db.config';
 import { create_test_user } from './config/test-user.config';
+import { exception_filter } from './middlewares/exception.filter';
+import { error_handler } from './middlewares/error.handler';
 
 // Connect to database
 connect_to_database();
@@ -25,7 +27,7 @@ app.use(
 app.disable('x-powered-by');
 
 // App routes
-app.use('/api/v1', routes);
+app.use('/api/v1', routes, exception_filter, error_handler);
 
 // 404 routes
 app.all('*', (req: Request, res: Response) => {

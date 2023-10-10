@@ -13,23 +13,23 @@ export function token(type: TokenType) {
         const token = ty === 'Bearer' ? to : undefined;
 
         if (!token) {
-            throw new UnauthorizedException();
+            return next(new UnauthorizedException());
         }
 
         const decoded = tokenService.decrypt_token(type, token);
 
         if (!decoded) {
-            throw new UnauthorizedException();
+            return next(new UnauthorizedException());
         }
 
         if (decoded.ip_address != req.ip) {
-            throw new ForbiddenException();
+            return next(new ForbiddenException());
         }
 
         const user = await userService.find_one_by_id(decoded.user_id);
 
         if (!user) {
-            throw new UnauthorizedException();
+            return next(new UnauthorizedException());
         }
 
         req.token = token;
