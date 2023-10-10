@@ -1,6 +1,10 @@
 import { UserCreateDto } from '../dto/user-create.dto';
 import { UserUpdateDto } from '../dto/user-update.dto';
-import { WrongCredentialsException } from '../exceptions/auth.exception';
+import {
+    EmailInUseException,
+    UsernameInUseException,
+    WrongCredentialsException,
+} from '../exceptions/auth.exception';
 import { Address } from '../schemas/address.schema';
 import { IUser, User } from '../schemas/user.schema';
 import { strip_password, success } from '../utils';
@@ -19,6 +23,11 @@ export async function find_one_by_email(email: string) {
 }
 
 export async function create(dto: UserCreateDto) {
+    if (await find_one_by_username(dto.username))
+        throw new UsernameInUseException();
+
+    if (await find_one_by_email(dto.email)) throw new EmailInUseException();
+
     dto.password = await bcrypt.hash(dto.password, 10);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
