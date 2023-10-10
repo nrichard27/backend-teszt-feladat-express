@@ -13,14 +13,12 @@ export function exception_filter(
             code: err.code,
             message: err.message,
         });
-        next();
     } else if (err instanceof DtoException) {
         res.status(err.status).json({
             code: err.code,
             message: err.message,
             errors: err.errors,
         });
-        next();
     } else {
         next(err);
     }

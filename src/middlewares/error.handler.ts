@@ -4,6 +4,7 @@ export function error_handler(
     err: Error,
     req: Request,
     res: Response,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     next: NextFunction,
 ) {
     console.error(err.stack);
@@ -11,5 +12,4 @@ export function error_handler(
         code: '0',
         message: 'Something went wrong!',
     });
-    next();
 }
