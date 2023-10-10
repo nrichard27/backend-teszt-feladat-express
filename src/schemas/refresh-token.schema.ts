@@ -23,6 +23,7 @@ export const RefreshTokenSchema = new Schema<IRefreshToken>({
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
+        required: true,
     },
 });
 
