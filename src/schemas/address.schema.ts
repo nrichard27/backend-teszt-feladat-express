@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import uuid from 'uuid';
+import * as uuid from 'uuid';
 import { IUser, User } from './user.schema';
 
 export class IAddress {
@@ -37,6 +37,7 @@ export const AddressSchema = new Schema<IAddress>({
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
+        required: true,
     },
 });
 
