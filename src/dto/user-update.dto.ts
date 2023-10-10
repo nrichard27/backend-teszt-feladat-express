@@ -5,11 +5,36 @@ import {
     IsOptional,
     IsString,
     IsArray,
+    IsObject,
 } from 'class-validator';
 import { Role } from '../interfaces/role.enum';
 import { IAddress } from '../schemas/address.schema';
-import { Type } from 'class-transformer';
 
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     UserUpdateDto:
+ *       type: object
+ *       properties:
+ *         email:
+ *           type: string
+ *           example: johndoe@example.com
+ *         username:
+ *           type: string
+ *           example: johndoe
+ *         password:
+ *           type: string
+ *           example: secretpassword
+ *         role:
+ *           type: integer
+ *           format: int32
+ *           example: 1
+ *         addresses:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Address'
+ */
 export class UserUpdateDto {
     @IsString()
     @IsOptional()
@@ -28,7 +53,7 @@ export class UserUpdateDto {
     role?: number;
 
     @IsArray()
-    @Type(() => IAddress)
+    @IsObject()
     @IsOptional()
     addresses?: IAddress[];
 }

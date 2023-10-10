@@ -11,6 +11,38 @@ export class IAddress {
     user: IUser;
 }
 
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Address:
+ *       type: object
+ *       required:
+ *         - country
+ *         - city
+ *         - postal_code
+ *         - street
+ *         - user
+ *       properties:
+ *         id:
+ *           type: string
+ *           example: 11bf5b37-e0b8-42e0-8dcf-dc8c4aefc000
+ *           description: This property is automatically generated
+ *         country:
+ *           type: string
+ *           example: Hungary
+ *         city:
+ *           type: string
+ *           example: Debrecen
+ *         postal_code:
+ *           type: string
+ *           example: 4025
+ *         street:
+ *           type: string
+ *           example: Széchenyi utca 57/A
+ *         user:
+ *           $ref: '#/components/schemas/User'
+ */
 export const AddressSchema = new Schema<IAddress>({
     id: {
         type: String,

@@ -15,6 +15,48 @@ export interface IUser {
     updatedAt: Date;
 }
 
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - email
+ *         - username
+ *         - password
+ *         - addresses
+ *       properties:
+ *         id:
+ *           type: string
+ *           example: 11bf5b37-e0b8-42e0-8dcf-dc8c4aefc000
+ *           description: This property is automatically generated
+ *         email:
+ *           type: string
+ *           example: johndoe@example.com
+ *         username:
+ *           type: string
+ *           example: johndoe
+ *         password:
+ *           type: string
+ *           example: secretpassword
+ *         role:
+ *           type: integer
+ *           format: int32
+ *           example: 1
+ *         addresses:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Address'
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: This property is automatically generated
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: This property is automatically generated
+ */
 export const UserSchema = new Schema<IUser>(
     {
         id: {

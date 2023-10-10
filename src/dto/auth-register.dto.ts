@@ -2,13 +2,38 @@ import {
     IsArray,
     IsEmail,
     IsNotEmpty,
-    IsOptional,
+    IsObject,
     IsString,
     IsStrongPassword,
 } from 'class-validator';
 import { IAddress } from '../schemas/address.schema';
-import { Type } from 'class-transformer';
 
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     AuthRegisterDto:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *         - username
+ *         - addresses
+ *       properties:
+ *         email:
+ *           type: string
+ *           example: johndoe@example.com
+ *         username:
+ *           type: string
+ *           example: johndoe
+ *         password:
+ *           type: string
+ *           example: secretpassword
+ *         addresses:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Address'
+ */
 export class AuthRegisterDto {
     @IsNotEmpty()
     @IsEmail()
@@ -23,7 +48,7 @@ export class AuthRegisterDto {
     password: string;
 
     @IsArray()
-    @Type(() => IAddress)
-    @IsOptional()
-    addresses?: IAddress[];
+    @IsObject()
+    @IsNotEmpty()
+    addresses: IAddress[];
 }

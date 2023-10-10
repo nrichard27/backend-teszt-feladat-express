@@ -4,6 +4,7 @@ import routes from './router';
 import helmet from 'helmet';
 import { connect_to_database } from './config/db.config';
 import { create_test_user } from './config/test-user.config';
+import { swagger_docs } from './swagger';
 import { exception_filter } from './middlewares/exception.filter';
 import { error_handler } from './middlewares/error.handler';
 
@@ -25,6 +26,11 @@ app.use(
     }),
 );
 app.disable('x-powered-by');
+
+// Start Swagger Docs (only in development mode)
+if (process.env.NODE_ENV != 'production') {
+    swagger_docs(app);
+}
 
 // App routes
 app.use('/api/v1', routes, exception_filter, error_handler);
