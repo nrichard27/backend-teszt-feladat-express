@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import { Role } from '../interfaces/role.enum';
 import * as uuid from 'uuid';
 import { Address, IAddress } from './address.schema';
-import { RefreshToken } from './refresh-token.shema';
+import { RefreshToken } from './refresh-token.schema';
 
 export interface IUser {
     id: string;
@@ -43,7 +43,9 @@ export const UserSchema = new Schema<IUser>(
             default: Role.USER,
             required: true,
         },
-        addresses: [{ type: Schema.Types.ObjectId, ref: 'Address' }],
+        addresses: [
+            { type: Schema.Types.ObjectId, ref: 'Address', required: true },
+        ],
     },
     { timestamps: true },
 );
