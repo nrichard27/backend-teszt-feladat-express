@@ -3,6 +3,8 @@ services:
     build: .
     ports:
       - 3000:3000
+    environment:
+      - API_MONGODB_CONNECTION_STRING=mongodb://mongo-db:27017
   mongo-db:
     image: mongo:latest
     ports:

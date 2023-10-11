@@ -11,16 +11,10 @@ FROM node:20-alpine3.16
 
 WORKDIR /api
 
-COPY --from=build /build ./
-
-ENV API_MONGODB_CONNECTION_STRING mongodb://localhost:27017
-
-ENV API_WEBSITE_URL *
-
-ENV API_ACCESS_TOKEN_SECRET asd1
-ENV API_REFRESH_TOKEN_SECRET asd2
-
-ENV API_PORT 3000
+COPY --from=build /build/dist ./dist
+COPY --from=build /build/package.json .
+COPY --from=build /build/package-lock.json .
+COPY --from=build /build/LICENSE .
 
 ENV NODE_ENV production
 
