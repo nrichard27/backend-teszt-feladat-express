@@ -8,8 +8,8 @@ import { Address } from '../schemas/address.schema';
 import { User } from '../schemas/user.schema';
 import { success } from '../utils';
 
-export async function create(user_id: string, dto: AddressCreateDto) {
-    const user = await User.findOne({ user_id });
+export async function create(id: string, dto: AddressCreateDto) {
+    const user = await User.findOne({ id });
 
     if (!user) {
         throw new WrongCredentialsException();
