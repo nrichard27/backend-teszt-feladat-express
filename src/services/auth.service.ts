@@ -10,7 +10,6 @@ import * as tokenService from '../services/token.service';
 import { success } from '../utils';
 import { AuthRegisterDto } from '../dto/auth-register.dto';
 import { IUser } from '../schemas/user.schema';
-import { Address } from '../schemas/address.schema';
 
 export async function login(dto: AuthLoginDto, ip: string) {
     const user = await userService.find_one_by_email(dto.email);
@@ -24,10 +23,13 @@ export async function login(dto: AuthLoginDto, ip: string) {
     }
 
     return success(
-        await tokenService.generate_login_tokens({
-            user_id: user.id,
-            ip_address: ip,
-        }),
+        await tokenService.generate_login_tokens(
+            {
+                user_id: user.id,
+                ip_address: ip,
+            },
+            user,
+        ),
     );
 }
 
@@ -38,26 +40,16 @@ export async function register(dto: AuthRegisterDto, ip: string) {
     if (await userService.find_one_by_email(dto.email))
         throw new EmailInUseException();
 
-    dto.password = await bcrypt.hash(dto.password, 10);
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const new_addresses: any[] = [];
-
-    dto.addresses?.forEach(async (a) => {
-        const addr = await Address.create(a);
-        new_addresses.push(addr);
-        await addr.save();
-    });
-
-    dto.addresses = new_addresses;
-
-    const user = await userService.create(dto);
+    const user = await userService.create_and_return(dto);
 
     return success(
-        await tokenService.generate_login_tokens({
-            user_id: user.id,
-            ip_address: ip,
-        }),
+        await tokenService.generate_login_tokens(
+            {
+                user_id: user.id,
+                ip_address: ip,
+            },
+            user,
+        ),
     );
 }
 

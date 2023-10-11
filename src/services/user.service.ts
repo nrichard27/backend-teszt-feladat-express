@@ -22,12 +22,7 @@ export async function find_one_by_email(email: string) {
     return await User.findOne({ email });
 }
 
-export async function create(dto: UserCreateDto) {
-    if (await find_one_by_username(dto.username))
-        throw new UsernameInUseException();
-
-    if (await find_one_by_email(dto.email)) throw new EmailInUseException();
-
+export async function create_and_return(dto: UserCreateDto) {
     dto.password = await bcrypt.hash(dto.password, 10);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,8 +37,18 @@ export async function create(dto: UserCreateDto) {
     dto.addresses = new_addresses;
 
     const user = await User.create({ dto });
-
     await user.save();
+
+    return user;
+}
+
+export async function create(dto: UserCreateDto) {
+    if (await find_one_by_username(dto.username))
+        throw new UsernameInUseException();
+
+    if (await find_one_by_email(dto.email)) throw new EmailInUseException();
+
+    const user = await create_and_return(dto);
 
     return success({ user: strip_password(user) });
 }

@@ -3,6 +3,7 @@ import { ITokenPayload } from '../interfaces/token-payload.interface';
 import { ILoginTokens } from '../interfaces/login-tokens.interface';
 import { TokenType } from '../interfaces/token-type.enum';
 import { IRefreshToken, RefreshToken } from '../schemas/refresh-token.schema';
+import { IUser } from '../schemas/user.schema';
 
 export function generate_access_token(payload: ITokenPayload): string {
     return jwt.sign(
@@ -16,6 +17,7 @@ export function generate_access_token(payload: ITokenPayload): string {
 
 export async function generate_refresh_token(
     payload: ITokenPayload,
+    user: IUser,
 ): Promise<string> {
     const token = jwt.sign(
         { ...payload, time: Date.now() },
@@ -27,6 +29,7 @@ export async function generate_refresh_token(
 
     const refreshToken = await RefreshToken.create({
         token,
+        user,
     });
 
     await refreshToken.save();
@@ -36,9 +39,10 @@ export async function generate_refresh_token(
 
 export async function generate_login_tokens(
     payload: ITokenPayload,
+    user: IUser,
 ): Promise<ILoginTokens> {
     const access_token = generate_access_token(payload);
-    const refresh_token = await generate_refresh_token(payload);
+    const refresh_token = await generate_refresh_token(payload, user);
 
     return { access_token, refresh_token };
 }
@@ -54,32 +58,40 @@ export function decrypt_access_token(token: string): ITokenPayload | null {
     }
 }
 
-export function decrypt_refresh_token(token: string): ITokenPayload | null {
+export async function decrypt_refresh_token(
+    token: string,
+): Promise<ITokenPayload | null> {
     try {
-        return jwt.verify(
+        const decoded = jwt.verify(
             token,
             process.env.API_REFRESH_TOKEN_SECRET || 'asd2',
         ) as ITokenPayload;
+
+        const t = await RefreshToken.findOne({ token });
+
+        if (!t) return null;
+
+        return decoded;
     } catch {
         logout_refresh_token(token);
         return null;
     }
 }
 
-export function decrypt_token(
+export async function decrypt_token(
     type: TokenType,
     token: string,
-): ITokenPayload | null {
+): Promise<ITokenPayload | null> {
     switch (type) {
         case TokenType.Access:
             return decrypt_access_token(token);
         case TokenType.Refresh:
-            return decrypt_refresh_token(token);
+            return await decrypt_refresh_token(token);
     }
 }
 
 export async function logout_refresh_token(token: string) {
-    RefreshToken.deleteOne({ token });
+    await RefreshToken.deleteOne({ token });
 }
 
 export async function find_refresh_token(

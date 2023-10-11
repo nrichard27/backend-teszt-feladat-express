@@ -16,7 +16,7 @@ export function token(type: TokenType) {
             return next(new UnauthorizedException());
         }
 
-        const decoded = tokenService.decrypt_token(type, token);
+        const decoded = await tokenService.decrypt_token(type, token);
 
         if (!decoded) {
             return next(new UnauthorizedException());
