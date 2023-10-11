@@ -12,6 +12,174 @@ const router = Router();
 
 /**
  * @openapi
+ * /api/v1/users/@me:
+ *   get:
+ *     tags:
+ *       - Users
+ *     summary: Bejelentkezett felhasználó lekérése
+ *     description: Lekéri a bejelentkezett felhasználót
+ *     operationId: userGetMe
+ *     responses:
+ *       '200':
+ *         description: Siker
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/responses/Success'
+ *             examples:
+ *               1:
+ *                 $ref: '#/components/examples/UserSuccess'
+ *       '401':
+ *         description: Hiba történt
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/responses/Error'
+ *             examples:
+ *               1:
+ *                 $ref: '#/components/examples/UnauthorizedError'
+ *       '403':
+ *         description: Tiltott. A request IP címe nem egyezik a tokenben tárolt IP címmel.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/responses/Error'
+ *             examples:
+ *               1:
+ *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get(
+    '/@me',
+    token(TokenType.Access),
+    async (req: Request, res: Response, next: NextFunction) => {
+        res.json(await userService.get_me(req.user!).catch((err) => next(err)));
+    },
+);
+
+/**
+ * @openapi
+ * /api/v1/users/@me:
+ *   patch:
+ *     tags:
+ *       - Users
+ *     summary: Bejelentkezett felhasználó frissítése
+ *     description: Frissíti a bejelentkezett felhasználót
+ *     operationId: userUpdateMe
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserUpdateDto'
+ *       required: true
+ *     responses:
+ *       '200':
+ *         description: Siker
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/responses/Success'
+ *             examples:
+ *               1:
+ *                 $ref: '#/components/examples/UserSuccess'
+ *       '400':
+ *         description: Hibás body
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/responses/Error'
+ *             examples:
+ *               1:
+ *                 $ref: '#/components/examples/DtoValidationError'
+ *       '401':
+ *         description: Hiba történt
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/responses/Error'
+ *             examples:
+ *               1:
+ *                 $ref: '#/components/examples/UnauthorizedError'
+ *       '403':
+ *         description: Tiltott. A request IP címe nem egyezik a tokenben tárolt IP címmel.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/responses/Error'
+ *             examples:
+ *               1:
+ *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
+ */
+router.patch(
+    '/@me',
+    dto(UserUpdateDto),
+    token(TokenType.Access),
+    async (req: Request, res: Response, next: NextFunction) => {
+        res.json(
+            await userService
+                .update_by_id(req.user!.id, req.body)
+                .catch((err) => next(err)),
+        );
+    },
+);
+
+/**
+ * @openapi
+ * /api/v1/users/@me:
+ *   delete:
+ *     tags:
+ *       - Users
+ *     summary: Bejelentkezett felhasználó törlése
+ *     description: Törli a bejelentkezett felhasználót.
+ *     operationId: userDeleteMe
+ *     responses:
+ *       '200':
+ *         description: Siker
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/responses/Success'
+ *             examples:
+ *               1:
+ *                 $ref: '#/components/examples/EmptySuccess'
+ *       '401':
+ *         description: Hiba történt
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/responses/Error'
+ *             examples:
+ *               1:
+ *                 $ref: '#/components/examples/UnauthorizedError'
+ *       '403':
+ *         description: Tiltott. A request IP címe nem egyezik a tokenben tárolt IP címmel
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/responses/Error'
+ *             examples:
+ *               1:
+ *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
+ */
+router.delete(
+    '/@me',
+    token(TokenType.Access),
+    async (req: Request, res: Response, next: NextFunction) => {
+        res.json(
+            await userService
+                .delete_by_id(req.user!.id)
+                .catch((err) => next(err)),
+        );
+    },
+);
+
+/**
+ * @openapi
  * /api/v1/users:
  *   post:
  *     tags:
@@ -316,174 +484,6 @@ router.delete(
         res.json(
             await userService
                 .delete_by_id(req.params.id)
-                .catch((err) => next(err)),
-        );
-    },
-);
-
-/**
- * @openapi
- * /api/v1/users/@me:
- *   get:
- *     tags:
- *       - Users
- *     summary: Bejelentkezett felhasználó lekérése
- *     description: Lekéri a bejelentkezett felhasználót
- *     operationId: userGetMe
- *     responses:
- *       '200':
- *         description: Siker
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/responses/Success'
- *             examples:
- *               1:
- *                 $ref: '#/components/examples/UserSuccess'
- *       '401':
- *         description: Hiba történt
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/responses/Error'
- *             examples:
- *               1:
- *                 $ref: '#/components/examples/UnauthorizedError'
- *       '403':
- *         description: Tiltott. A request IP címe nem egyezik a tokenben tárolt IP címmel.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/responses/Error'
- *             examples:
- *               1:
- *                 $ref: '#/components/examples/ForbiddenError'
- *     security:
- *       - bearerAuth: []
- */
-router.get(
-    '/@me',
-    token(TokenType.Access),
-    async (req: Request, res: Response, next: NextFunction) => {
-        res.json(await userService.get_me(req.user!).catch((err) => next(err)));
-    },
-);
-
-/**
- * @openapi
- * /api/v1/users/@me:
- *   patch:
- *     tags:
- *       - Users
- *     summary: Bejelentkezett felhasználó frissítése
- *     description: Frissíti a bejelentkezett felhasználót
- *     operationId: userUpdateMe
- *     requestBody:
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/UserUpdateDto'
- *       required: true
- *     responses:
- *       '200':
- *         description: Siker
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/responses/Success'
- *             examples:
- *               1:
- *                 $ref: '#/components/examples/UserSuccess'
- *       '400':
- *         description: Hibás body
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/responses/Error'
- *             examples:
- *               1:
- *                 $ref: '#/components/examples/DtoValidationError'
- *       '401':
- *         description: Hiba történt
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/responses/Error'
- *             examples:
- *               1:
- *                 $ref: '#/components/examples/UnauthorizedError'
- *       '403':
- *         description: Tiltott. A request IP címe nem egyezik a tokenben tárolt IP címmel.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/responses/Error'
- *             examples:
- *               1:
- *                 $ref: '#/components/examples/ForbiddenError'
- *     security:
- *       - bearerAuth: []
- */
-router.patch(
-    '/@me',
-    dto(UserUpdateDto),
-    token(TokenType.Access),
-    async (req: Request, res: Response, next: NextFunction) => {
-        res.json(
-            await userService
-                .update_by_id(req.user!.id, req.body)
-                .catch((err) => next(err)),
-        );
-    },
-);
-
-/**
- * @openapi
- * /api/v1/users/@me:
- *   delete:
- *     tags:
- *       - Users
- *     summary: Bejelentkezett felhasználó törlése
- *     description: Törli a bejelentkezett felhasználót.
- *     operationId: userDeleteMe
- *     responses:
- *       '200':
- *         description: Siker
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/responses/Success'
- *             examples:
- *               1:
- *                 $ref: '#/components/examples/EmptySuccess'
- *       '401':
- *         description: Hiba történt
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/responses/Error'
- *             examples:
- *               1:
- *                 $ref: '#/components/examples/UnauthorizedError'
- *       '403':
- *         description: Tiltott. A request IP címe nem egyezik a tokenben tárolt IP címmel
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/responses/Error'
- *             examples:
- *               1:
- *                 $ref: '#/components/examples/ForbiddenError'
- *     security:
- *       - bearerAuth: []
- */
-router.delete(
-    '/@me',
-    token(TokenType.Access),
-    async (req: Request, res: Response, next: NextFunction) => {
-        res.json(
-            await userService
-                .delete_by_id(req.user!.id)
                 .catch((err) => next(err)),
         );
     },

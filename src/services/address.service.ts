@@ -9,7 +9,7 @@ import { User } from '../schemas/user.schema';
 import { success } from '../utils';
 
 export async function create(id: string, dto: AddressCreateDto) {
-    const user = await User.findOne({ id });
+    const user = await User.findOne({ id }).populate('addresses');
 
     if (!user) {
         throw new WrongCredentialsException();
