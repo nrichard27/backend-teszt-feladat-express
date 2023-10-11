@@ -27,12 +27,12 @@ export async function generate_refresh_token(
         },
     );
 
-    const refreshToken = await RefreshToken.create({
+    const refresht_token = await RefreshToken.create({
         token,
         user,
     });
 
-    await refreshToken.save();
+    await refresht_token.save();
 
     return token;
 }
@@ -97,9 +97,13 @@ export async function logout_refresh_token(token: string) {
 export async function find_refresh_token(
     token: string,
 ): Promise<IRefreshToken | null> {
-    const refreshToken = await RefreshToken.findOne({
+    const refresht_token = await RefreshToken.findOne({
         token,
     });
 
-    return refreshToken;
+    return refresht_token;
+}
+
+export async function find_refresh_token_by_user(user: IUser) {
+    return await RefreshToken.findOne({ user });
 }
