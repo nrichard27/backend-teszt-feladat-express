@@ -7,7 +7,7 @@ import { IRefreshToken, RefreshToken } from '../schemas/refresh-token.schema';
 export function generate_access_token(payload: ITokenPayload): string {
     return jwt.sign(
         { ...payload, time: Date.now() },
-        process.env.API_ACCESS_TOKEN_SECRET as string,
+        process.env.API_ACCESS_TOKEN_SECRET || 'asd1',
         {
             expiresIn: '15m',
         },
@@ -19,7 +19,7 @@ export async function generate_refresh_token(
 ): Promise<string> {
     const token = jwt.sign(
         { ...payload, time: Date.now() },
-        process.env.API_REFRESH_TOKEN_SECRET as string,
+        process.env.API_REFRESH_TOKEN_SECRET || 'asd2',
         {
             expiresIn: '7d',
         },
@@ -47,7 +47,7 @@ export function decrypt_access_token(token: string): ITokenPayload | null {
     try {
         return jwt.verify(
             token,
-            process.env.API_ACCESS_TOKEN_SECRET as string,
+            process.env.API_ACCESS_TOKEN_SECRET || 'asd1',
         ) as ITokenPayload;
     } catch {
         return null;
@@ -58,7 +58,7 @@ export function decrypt_refresh_token(token: string): ITokenPayload | null {
     try {
         return jwt.verify(
             token,
-            process.env.API_REFRESH_TOKEN_SECRET as string,
+            process.env.API_REFRESH_TOKEN_SECRET || 'asd2',
         ) as ITokenPayload;
     } catch {
         logout_refresh_token(token);

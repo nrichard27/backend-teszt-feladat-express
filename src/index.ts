@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(
     cors({
-        origin: process.env.API_WEBSITE_URL,
+        origin: process.env.API_WEBSITE_URL || '*',
         optionsSuccessStatus: 200,
     }),
 );
@@ -44,6 +44,8 @@ app.all('*', (req: Request, res: Response) => {
 });
 
 // Start listening for connections
-app.listen(process.env.API_PORT, () => {
-    console.log(`API listening on port ${process.env.API_PORT} at /api`);
+app.listen(process.env.API_PORT || 3000, () => {
+    console.log(
+        `API listening on port ${process.env.API_PORT || 3000} at /api`,
+    );
 });
