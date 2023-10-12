@@ -15,7 +15,7 @@ export function generate_access_token(payload: ITokenPayload): string {
     );
 }
 
-export async function generate_refresh_token(
+async function generate_refresh_token(
     payload: ITokenPayload,
     user: IUser,
 ): Promise<string> {
@@ -47,7 +47,7 @@ export async function generate_login_tokens(
     return { access_token, refresh_token };
 }
 
-export function decrypt_access_token(token: string): ITokenPayload | null {
+function decrypt_access_token(token: string): ITokenPayload | null {
     try {
         return jwt.verify(
             token,
@@ -58,7 +58,7 @@ export function decrypt_access_token(token: string): ITokenPayload | null {
     }
 }
 
-export async function decrypt_refresh_token(
+async function decrypt_refresh_token(
     token: string,
 ): Promise<ITokenPayload | null> {
     try {
