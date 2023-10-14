@@ -1,8 +1,12 @@
 import { IUser } from '../../schemas/user.schema';
 
-declare module 'express-serve-static-core' {
-    interface Request {
+export {}
+
+declare global {
+  namespace Express {
+    export interface Request {
         user?: IUser;
         token?: string;
     }
+  }
 }
