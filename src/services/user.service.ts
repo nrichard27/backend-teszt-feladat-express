@@ -25,18 +25,20 @@ export async function find_one_by_email(email: string) {
 export async function create_and_return(dto: UserCreateDto) {
     dto.password = await bcrypt.hash(dto.password, 10);
 
+    const user = await User.create({ ...dto, addresses: [] });
+    await user.save();
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const new_addresses: any[] = [];
 
-    dto.addresses?.forEach(async (a) => {
-        const addr = await Address.create(a);
+    for (const a of dto.addresses) {
+        const addr = await Address.create({ ...a, user });
         new_addresses.push(addr);
         await addr.save();
-    });
+    }
 
-    dto.addresses = new_addresses;
+    user.addresses = new_addresses;
 
-    const user = await User.create({ dto });
     await user.save();
 
     return user;
@@ -98,11 +100,11 @@ export async function update_by_id(id: string, dto: UserUpdateDto) {
 
         dto.addresses = [];
 
-        additions.forEach(async (a) => {
-            const addr = await Address.create(a);
+        for (const a of additions) {
+            const addr = await Address.create({ ...a, user });
             dto.addresses?.push(addr);
             await addr.save();
-        });
+        }
     }
 
     await user.updateOne(dto);
