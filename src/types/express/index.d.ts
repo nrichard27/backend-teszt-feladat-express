@@ -1,12 +1,12 @@
 import { IUser } from '../../schemas/user.schema';
 
-export {}
+export {};
 
 declare global {
-  namespace Express {
-    export interface Request {
-        user?: IUser;
-        token?: string;
+    namespace Express {
+        export interface Request {
+            user?: IUser;
+            token?: string;
+        }
     }
-  }
 }
