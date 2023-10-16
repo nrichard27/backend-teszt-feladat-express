@@ -107,7 +107,11 @@ export async function update_by_id(id: string, dto: UserUpdateDto) {
         }
     }
 
-    await user.updateOne(dto);
+    for (const key in dto) {
+        user[key] = dto[key];
+    }
+
+    await user.save();
 
     return success({ user: strip_unused(user) });
 }
