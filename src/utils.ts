@@ -1,5 +1,3 @@
-import { IUser } from './schemas/user.schema';
-
 export function success(obj: object = {}): {
     code: number;
     message: string;
@@ -9,9 +7,10 @@ export function success(obj: object = {}): {
     return { code: 900, message: 'Success', ...obj };
 }
 
-export function strip_password(user: IUser) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function strip_unused(user: any) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...result } = user;
+    const { password, _id, __v, ...result } = user.toObject();
 
     return result;
 }

@@ -7,7 +7,7 @@ import {
 } from '../exceptions/auth.exception';
 import { Address } from '../schemas/address.schema';
 import { IUser, User } from '../schemas/user.schema';
-import { strip_password, success } from '../utils';
+import { strip_unused, success } from '../utils';
 import * as bcrypt from 'bcrypt';
 
 export async function find_one_by_id(id: string) {
@@ -52,14 +52,14 @@ export async function create(dto: UserCreateDto) {
 
     const user = await create_and_return(dto);
 
-    return success({ user: strip_password(user) });
+    return success({ user: strip_unused(user) });
 }
 
 export async function get_all() {
     const users = await User.find();
 
     const result = users.forEach((u) => {
-        return strip_password(u);
+        return strip_unused(u);
     });
 
     return success({ users: result });
@@ -72,7 +72,7 @@ export async function get_by_id(id: string) {
         throw new WrongCredentialsException();
     }
 
-    return success({ user: strip_password(user) });
+    return success({ user: strip_unused(user) });
 }
 
 export async function update_by_id(id: string, dto: UserUpdateDto) {
@@ -109,7 +109,7 @@ export async function update_by_id(id: string, dto: UserUpdateDto) {
 
     await user.updateOne(dto);
 
-    return success({ user: strip_password(user) });
+    return success({ user: strip_unused(user) });
 }
 
 export async function delete_by_id(id: string) {
@@ -125,5 +125,5 @@ export async function delete_by_id(id: string) {
 }
 
 export async function get_me(user: IUser) {
-    return await success({ user: strip_password(user) });
+    return await success({ user: strip_unused(user) });
 }

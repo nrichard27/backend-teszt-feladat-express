@@ -6,6 +6,7 @@ import {
 import * as tokenService from '../services/token.service';
 import * as userService from '../services/user.service';
 import { TokenType } from '../interfaces/token-type.enum';
+import { strip_unused } from '../utils';
 
 export function token(type: TokenType) {
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -33,7 +34,7 @@ export function token(type: TokenType) {
         }
 
         req.token = token;
-        req.user = user;
+        req.user = strip_unused(user);
 
         next();
     };
