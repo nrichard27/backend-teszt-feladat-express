@@ -124,6 +124,6 @@ export async function delete_by_id(id: string) {
     return success();
 }
 
-export function get_me(user: IUser) {
-    return success({ user: strip_password(user) });
+export async function get_me(user: IUser) {
+    return await success({ user: strip_password(user) });
 }
