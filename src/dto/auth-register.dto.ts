@@ -2,7 +2,6 @@ import {
     IsArray,
     IsEmail,
     IsNotEmpty,
-    IsObject,
     IsString,
     IsStrongPassword,
 } from 'class-validator';
@@ -48,7 +47,6 @@ export class AuthRegisterDto {
     password: string;
 
     @IsArray()
-    @IsObject()
     @IsNotEmpty()
     addresses: IAddress[];
 }

@@ -6,7 +6,6 @@ import {
     IsString,
     IsNotEmpty,
     IsArray,
-    IsObject,
 } from 'class-validator';
 import { Role } from '../interfaces/role.enum';
 import { IAddress } from '../schemas/address.schema';
@@ -59,7 +58,6 @@ export class UserCreateDto {
     role?: number;
 
     @IsArray()
-    @IsObject()
     @IsNotEmpty()
     addresses: IAddress[];
 }

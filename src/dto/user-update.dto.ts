@@ -5,7 +5,6 @@ import {
     IsOptional,
     IsString,
     IsArray,
-    IsObject,
 } from 'class-validator';
 import { Role } from '../interfaces/role.enum';
 import { IAddress } from '../schemas/address.schema';
@@ -53,7 +52,6 @@ export class UserUpdateDto {
     role?: number;
 
     @IsArray()
-    @IsObject()
     @IsOptional()
     addresses?: IAddress[];
 }
