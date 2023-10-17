@@ -80,6 +80,58 @@ router.post(
 
 /**
  * @openapi
+ * /api/v1/addresses/@me:
+ *   get:
+ *     tags:
+ *       - Addresses
+ *     summary: Bejelentkezett felhasználó összes címének lekérése
+ *     description: Lekéri a bejelentkezett felhasználó összes címét.
+ *     operationId: addressGetAllMe
+ *     responses:
+ *       '200':
+ *         description: Siker
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/responses/Success'
+ *             examples:
+ *               1:
+ *                 $ref: '#/components/examples/AddressesSuccess'
+ *       '401':
+ *         description: Hiba történt
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/responses/Error'
+ *             examples:
+ *               1:
+ *                 $ref: '#/components/examples/UnauthorizedError'
+ *       '403':
+ *         description: Tiltott. A request IP címe nem egyezik a tokenben tárolt IP címmel
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/responses/Error'
+ *             examples:
+ *               1:
+ *                 $ref: '#/components/examples/ForbiddenError'
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get(
+    '/@me',
+    token(TokenType.Access),
+    async (req: Request, res: Response, next: NextFunction) => {
+        res.json(
+            await addressService
+                .get_all_by_user_id(req.user!._id)
+                .catch((err) => next(err)),
+        );
+    },
+);
+
+/**
+ * @openapi
  * /api/v1/addresses/@me/{addressId}:
  *   get:
  *     tags:
