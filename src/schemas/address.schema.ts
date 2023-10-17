@@ -1,9 +1,8 @@
 import { Schema, model } from 'mongoose';
-import * as uuid from 'uuid';
 import { IUser, User } from './user.schema';
 
 export class IAddress {
-    id: string;
+    _id: string;
     country: string;
     city: string;
     postal_code: string;
@@ -44,12 +43,6 @@ export class IAddress {
  *           $ref: '#/components/schemas/User'
  */
 export const AddressSchema = new Schema<IAddress>({
-    id: {
-        type: String,
-        default: uuid.v4,
-        unique: true,
-        required: true,
-    },
     country: {
         type: String,
         required: true,

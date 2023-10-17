@@ -1,11 +1,10 @@
 import { Schema, model } from 'mongoose';
 import { Role } from '../interfaces/role.enum';
-import * as uuid from 'uuid';
 import { Address, IAddress } from './address.schema';
 import { RefreshToken } from './refresh-token.schema';
 
 export interface IUser {
-    id: string;
+    _id: string;
     username: string;
     email: string;
     password: string;
@@ -59,12 +58,6 @@ export interface IUser {
  */
 export const UserSchema = new Schema<IUser>(
     {
-        id: {
-            type: String,
-            default: uuid.v4,
-            unique: true,
-            required: true,
-        },
         username: {
             type: String,
             required: true,

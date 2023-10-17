@@ -8,8 +8,8 @@ import { Address } from '../schemas/address.schema';
 import { User } from '../schemas/user.schema';
 import { success } from '../utils';
 
-export async function create(id: string, dto: AddressCreateDto) {
-    const user = await User.findOne({ id }).populate('addresses');
+export async function create(_id: string, dto: AddressCreateDto) {
+    const user = await User.findOne({ _id }).populate('addresses');
 
     if (!user) {
         throw new WrongCredentialsException();
@@ -25,13 +25,13 @@ export async function create(id: string, dto: AddressCreateDto) {
 }
 
 export async function get_by_user_id(user_id: string, address_id: string) {
-    const user = await User.findOne({ id: user_id });
+    const user = await User.findOne({ _id: user_id });
 
     if (!user) {
         throw new WrongCredentialsException();
     }
 
-    const address = user.addresses.filter((a) => a.id == address_id);
+    const address = user.addresses.filter((a) => a._id == address_id);
 
     if (!address) {
         throw new NotFoundException();
@@ -42,8 +42,8 @@ export async function get_by_user_id(user_id: string, address_id: string) {
     });
 }
 
-export async function get_all_by_user_id(id: string) {
-    const user = await User.findOne({ id });
+export async function get_all_by_user_id(_id: string) {
+    const user = await User.findOne({ _id });
 
     if (!user) {
         throw new WrongCredentialsException();
@@ -57,19 +57,19 @@ export async function update_by_user_id(
     address_id: string,
     dto: AddressUpdateDto,
 ) {
-    const user = await User.findOne({ id: user_id });
+    const user = await User.findOne({ _id: user_id });
 
     if (!user) {
         throw new WrongCredentialsException();
     }
 
-    const address = user.addresses.filter((a) => a.id == address_id);
+    const address = user.addresses.filter((a) => a._id == address_id);
 
     if (!address) {
         throw new NotFoundException();
     }
 
-    const db_address = await Address.findOne({ id: address_id });
+    const db_address = await Address.findOne({ _id: address_id });
 
     if (!db_address) {
         console.error(
@@ -84,19 +84,19 @@ export async function update_by_user_id(
 }
 
 export async function delete_by_user_id(user_id: string, address_id: string) {
-    const user = await User.findOne({ id: user_id });
+    const user = await User.findOne({ _id: user_id });
 
     if (!user) {
         throw new WrongCredentialsException();
     }
 
-    const address = user.addresses.filter((a) => a.id == address_id);
+    const address = user.addresses.filter((a) => a._id == address_id);
 
     if (!address) {
         throw new NotFoundException();
     }
 
-    await Address.deleteOne({ id: address_id });
+    await Address.deleteOne({ _id: address_id });
 
     return success();
 }

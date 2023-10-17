@@ -72,7 +72,7 @@ router.post(
     async (req: Request, res: Response, next: NextFunction) => {
         res.json(
             await addressService
-                .create(req.user!.id, req.body)
+                .create(req.user!._id, req.body)
                 .catch((err) => next(err)),
         );
     },
@@ -130,7 +130,7 @@ router.get(
     async (req: Request, res: Response, next: NextFunction) => {
         res.json(
             await addressService
-                .get_all_by_user_id(req.user!.id)
+                .get_all_by_user_id(req.user!._id)
                 .catch((err) => next(err)),
         );
     },
@@ -188,7 +188,7 @@ router.get(
     async (req: Request, res: Response, next: NextFunction) => {
         res.json(
             await addressService
-                .get_by_user_id(req.user!.id, req.params.address_id)
+                .get_by_user_id(req.user!._id, req.params.address_id)
                 .catch((err) => next(err)),
         );
     },
@@ -263,7 +263,7 @@ router.patch(
         res.json(
             await addressService
                 .update_by_user_id(
-                    req.user!.id,
+                    req.user!._id,
                     req.params.address_id,
                     req.body,
                 )
@@ -324,7 +324,7 @@ router.delete(
     async (req: Request, res: Response, next: NextFunction) => {
         res.json(
             await addressService
-                .delete_by_user_id(req.user!.id, req.params.address_id)
+                .delete_by_user_id(req.user!._id, req.params.address_id)
                 .catch((err) => next(err)),
         );
     },

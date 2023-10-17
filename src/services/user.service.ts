@@ -10,8 +10,8 @@ import { IUser, User } from '../schemas/user.schema';
 import { strip_unused, success } from '../utils';
 import * as bcrypt from 'bcrypt';
 
-export async function find_one_by_id(id: string) {
-    return await User.findOne({ id });
+export async function find_one_by_id(_id: string) {
+    return await User.findOne({ _id });
 }
 
 export async function find_one_by_username(username: string) {
@@ -58,15 +58,15 @@ export async function create(dto: UserCreateDto) {
 export async function get_all() {
     const users = await User.find();
 
-    const result = users.forEach((u) => {
+    const result = users.map((u) => {
         return strip_unused(u);
     });
 
     return success({ users: result });
 }
 
-export async function get_by_id(id: string) {
-    const user = await User.findOne({ id }).populate('addresses');
+export async function get_by_id(_id: string) {
+    const user = await User.findOne({ _id }).populate('addresses');
 
     if (!user) {
         throw new WrongCredentialsException();
@@ -75,8 +75,8 @@ export async function get_by_id(id: string) {
     return success({ user: strip_unused(user) });
 }
 
-export async function update_by_id(id: string, dto: UserUpdateDto) {
-    const user = await User.findOne({ id }).populate('addresses');
+export async function update_by_id(_id: string, dto: UserUpdateDto) {
+    const user = await User.findOne({ _id }).populate('addresses');
 
     if (!user) {
         throw new WrongCredentialsException();
@@ -94,8 +94,8 @@ export async function update_by_id(id: string, dto: UserUpdateDto) {
             (a) => !user.addresses.includes(a),
         );
 
-        removals.forEach(async ({ id }) => {
-            await Address.deleteOne({ id });
+        removals.forEach(async ({ _id }) => {
+            await Address.deleteOne({ _id });
         });
 
         dto.addresses = [];
@@ -116,8 +116,8 @@ export async function update_by_id(id: string, dto: UserUpdateDto) {
     return success({ user: strip_unused(user) });
 }
 
-export async function delete_by_id(id: string) {
-    const user = await User.findOne({ id });
+export async function delete_by_id(_id: string) {
+    const user = await User.findOne({ _id });
 
     if (!user) {
         throw new WrongCredentialsException();

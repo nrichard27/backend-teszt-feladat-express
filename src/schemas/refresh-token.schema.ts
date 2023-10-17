@@ -1,9 +1,8 @@
 import { Schema, model } from 'mongoose';
-import * as uuid from 'uuid';
 import { IUser } from './user.schema';
 
 export interface IRefreshToken {
-    id: string;
+    _id: string;
     token: string;
     user: IUser;
 }
@@ -29,12 +28,6 @@ export interface IRefreshToken {
  *           $ref: '#/components/schemas/User'
  */
 export const RefreshTokenSchema = new Schema<IRefreshToken>({
-    id: {
-        type: String,
-        default: uuid.v4,
-        unique: true,
-        required: true,
-    },
     token: {
         type: String,
         required: true,

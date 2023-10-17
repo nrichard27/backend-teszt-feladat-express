@@ -28,7 +28,7 @@ export async function login(dto: AuthLoginDto, ip: string) {
         return success({
             refresh_token: refresh_token.token,
             access_token: tokenService.generate_access_token({
-                user_id: user.id,
+                user_id: user._id,
                 ip_address: ip,
             }),
         });
@@ -36,7 +36,7 @@ export async function login(dto: AuthLoginDto, ip: string) {
         return success(
             await tokenService.generate_login_tokens(
                 {
-                    user_id: user.id,
+                    user_id: user._id,
                     ip_address: ip,
                 },
                 user,
@@ -57,7 +57,7 @@ export async function register(dto: AuthRegisterDto, ip: string) {
     return success(
         await tokenService.generate_login_tokens(
             {
-                user_id: user.id,
+                user_id: user._id,
                 ip_address: ip,
             },
             user,
@@ -68,7 +68,7 @@ export async function register(dto: AuthRegisterDto, ip: string) {
 export async function refresh_token(user: IUser, ip: string, token: string) {
     return success({
         access_token: tokenService.generate_access_token({
-            user_id: user.id,
+            user_id: user._id,
             ip_address: ip,
         }),
         refresh_token: token,

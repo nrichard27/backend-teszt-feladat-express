@@ -120,7 +120,7 @@ router.patch(
     async (req: Request, res: Response, next: NextFunction) => {
         res.json(
             await userService
-                .update_by_id(req.user!.id, req.body)
+                .update_by_id(req.user!._id, req.body)
                 .catch((err) => next(err)),
         );
     },
@@ -172,7 +172,7 @@ router.delete(
     async (req: Request, res: Response, next: NextFunction) => {
         res.json(
             await userService
-                .delete_by_id(req.user!.id)
+                .delete_by_id(req.user!._id)
                 .catch((err) => next(err)),
         );
     },
