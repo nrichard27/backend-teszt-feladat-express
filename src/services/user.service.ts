@@ -129,5 +129,5 @@ export async function delete_by_id(id: string) {
 }
 
 export async function get_me(user: IUser) {
-    return await success({ user: strip_unused(user) });
+    return await success({ user });
 }
