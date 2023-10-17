@@ -6,7 +6,7 @@ import {
 } from '../exceptions/auth.exception';
 import { Address } from '../schemas/address.schema';
 import { User } from '../schemas/user.schema';
-import { success } from '../utils';
+import { strip_unused, success } from '../utils';
 
 export async function create(_id: string, dto: AddressCreateDto) {
     const user = await User.findOne({ _id }).populate('addresses');
@@ -21,11 +21,11 @@ export async function create(_id: string, dto: AddressCreateDto) {
     user.addresses.push(address);
     await user.save();
 
-    return success({ address });
+    return success({ address: strip_unused(address) });
 }
 
 export async function get_by_user_id(user_id: string, address_id: string) {
-    const user = await User.findOne({ _id: user_id });
+    const user = await User.findOne({ _id: user_id }).populate('addresses');
 
     if (!user) {
         throw new WrongCredentialsException();
@@ -37,19 +37,21 @@ export async function get_by_user_id(user_id: string, address_id: string) {
         throw new NotFoundException();
     }
 
-    return success({
-        address,
-    });
+    return success({ address: strip_unused(address) });
 }
 
 export async function get_all_by_user_id(_id: string) {
-    const user = await User.findOne({ _id });
+    const user = await User.findOne({ _id }).populate('addresses');
 
     if (!user) {
         throw new WrongCredentialsException();
     }
 
-    return success({ addresses: user.addresses });
+    const result = user.addresses.map((a) => {
+        return strip_unused(a);
+    });
+
+    return success({ addresses: result });
 }
 
 export async function update_by_user_id(
@@ -57,7 +59,7 @@ export async function update_by_user_id(
     address_id: string,
     dto: AddressUpdateDto,
 ) {
-    const user = await User.findOne({ _id: user_id });
+    const user = await User.findOne({ _id: user_id }).populate('addresses');
 
     if (!user) {
         throw new WrongCredentialsException();
@@ -78,9 +80,13 @@ export async function update_by_user_id(
         throw new NotFoundException();
     }
 
-    await db_address.updateOne(dto);
+    for (const key in dto) {
+        db_address[key] = dto[key];
+    }
 
-    return success({ address: db_address });
+    await db_address.save();
+
+    return success({ address: strip_unused(db_address) });
 }
 
 export async function delete_by_user_id(user_id: string, address_id: string) {

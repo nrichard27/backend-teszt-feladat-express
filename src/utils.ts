@@ -8,9 +8,9 @@ export function success(obj: object = {}): {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function strip_unused(user: any) {
+export function strip_unused(obj: any) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, __v, ...result } = user.toObject();
+    const { password, __v, user, ...result } = obj.toObject();
 
     return result;
 }
