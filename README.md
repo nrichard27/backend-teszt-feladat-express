@@ -10,6 +10,8 @@ jelszó: secretpassword
 
 _Készítette: nrichard27 (thenagyrichard@gmail.com) (https://nrichard.hu)_
 
+_(Jobban szeretek Discordon kommunikálni mint emailben:_ `midnightmqs` _)_
+
 ## Használat
 
 Production módban:
@@ -31,5 +33,5 @@ npm run dev
 
 **Dokumentáció production módban nincs generálva.**
 
-Swagger UI: http://localhost/docs
-OpenAPI specifikáció: http://localhost/docs.json
+Swagger UI: http://localhost:3000/docs
+OpenAPI specifikáció: http://localhost:3000/docs.json
