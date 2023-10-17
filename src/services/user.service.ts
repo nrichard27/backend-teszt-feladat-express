@@ -123,7 +123,7 @@ export async function delete_by_id(_id: string) {
         throw new WrongCredentialsException();
     }
 
-    await user.deleteOne();
+    await User.deleteOne({ _id });
 
     return success();
 }

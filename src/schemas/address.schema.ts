@@ -70,12 +70,14 @@ AddressSchema.pre(
     'deleteOne',
     { document: false, query: true },
     async function () {
-        const doc = await this.model.findOne(this.getFilter());
-        const user = await User.findOne({ _id: doc.user }).populate(
+        const doc = await this.model.findOne(this.getFilter()).populate('user');
+        const user = await User.findOne({ _id: doc.user._id }).populate(
             'addresses',
         );
-        user!.addresses = user!.addresses.filter((x) => x != doc);
-        user!.save();
+        user!.addresses = await user!.addresses.filter(
+            (a) => a._id.toString() != doc._id,
+        );
+        await user!.save();
     },
 );
 
